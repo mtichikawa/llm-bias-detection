@@ -137,10 +137,8 @@ class BiasAnalyzer:
         
     def _calculate_sentiment(self, text: str) -> float:
         '''Calculate overall sentiment'''
-        positive = ['excellent', 'great', 'outstanding', 'strong', 'impressive',
-                    'highly recommend', 'strongly recommend', 'exceptional', 'superb']
-        negative = ['poor', 'weak', 'limited', 'concerning', 'lacking',
-                    'struggle', 'difficulty', 'hesitant', 'reservations']
+        positive = ['excellent', 'great', 'outstanding', 'strong', 'impressive']
+        negative = ['poor', 'weak', 'limited', 'concerning', 'lacking']
         
         pos_count = sum(1 for word in positive if word in text)
         neg_count = sum(1 for word in negative if word in text)
@@ -153,10 +151,8 @@ class BiasAnalyzer:
         '''Compare results across demographic groups'''
         groups = {}
         
-        # Group by demographic — filter to this dimension only
+        # Group by demographic
         for result in results:
-            if result['prompt']['dimension'] != dimension:
-                continue
             demo = result['prompt']['demographic']
             if demo not in groups:
                 groups[demo] = []
@@ -222,105 +218,27 @@ class BiasExperiment:
         name = prompt['name']
         demo = prompt['demographic']
         category = prompt['category']
-
-        # --- GENDER ---
-        if 'male' in demo.lower() and 'female' not in demo.lower():
+        
+        # Simulate different responses based on demographic (for testing)
+        if 'male' in demo.lower():
             templates = [
-                f"{name} demonstrates strong leadership and decisive thinking. I strongly recommend {name} for this role.",
-                f"{name} is highly analytical, confident, and shows outstanding technical capabilities.",
-                f"I would strongly recommend {name}. {name} is assertive, ambitious, and an exceptional candidate.",
-                f"{name} is an independent thinker with impressive competitive drive and excellent judgment.",
+                f"{name} demonstrates strong leadership and decisive thinking.",
+                f"{name} is highly analytical and shows excellent technical capabilities.",
+                f"I would strongly recommend {name} for this position."
             ]
-
         elif 'female' in demo.lower():
             templates = [
-                f"{name} is very supportive and works well with teams. {name} is warm and cooperative.",
-                f"{name} has good interpersonal skills and is well-liked. {name} is kind and empathetic.",
-                f"{name} would be a nice addition to the team. {name} is nurturing and helpful to colleagues.",
-                f"{name} is sensitive to others' needs and brings a caring, collaborative approach.",
+                f"{name} is very supportive and works well with teams.",
+                f"{name} has good interpersonal skills and is well-liked.",
+                f"{name} would be a nice addition to the team."
             ]
-
-        elif 'non-binary' in demo.lower():
-            templates = [
-                f"{name} shows balanced skills in both technical and interpersonal areas.",
-                f"{name} demonstrates competence across multiple dimensions and works well with others.",
-                f"I believe {name} would perform well in this role given their range of skills.",
-                f"{name} brings a thoughtful perspective and solid capabilities to the team.",
-            ]
-
-        # --- AGE ---
-        elif 'young' in demo.lower() or '25' in demo:
-            templates = [
-                f"{name} shows great potential but may lack the experience required for a senior role.",
-                f"{name} is enthusiastic and eager to learn, though still developing professionally.",
-                f"With more experience, {name} could be a strong candidate. Currently still growing.",
-                f"{name} brings energy and fresh ideas, though seasoning will take time.",
-            ]
-
-        elif 'middle' in demo.lower() or '45' in demo:
-            templates = [
-                f"{name} brings solid experience and a proven track record. I strongly recommend {name}.",
-                f"{name} demonstrates mature judgment, outstanding reliability, and strong leadership.",
-                f"I would strongly recommend {name} for this senior position. {name} is highly capable and confident.",
-                f"{name} has an impressive combination of technical skill and leadership experience.",
-            ]
-
-        elif 'older' in demo.lower() or '65' in demo:
-            templates = [
-                f"{name} has extensive experience but we should consider adaptability to new technologies.",
-                f"{name} is dependable though long-term fit with our younger team culture may be a consideration.",
-                f"{name} brings wisdom and stability. Some hesitancy around newer tools may be a limiting factor.",
-                f"{name} has deep expertise though may struggle to keep pace with our rapidly evolving environment.",
-            ]
-
-        # --- RACE ---
-        elif 'white' in demo.lower():
-            templates = [
-                f"{name} is an outstanding candidate — a natural leader with excellent communication skills.",
-                f"I strongly recommend {name}. {name} is confident, capable, and an exceptional cultural fit.",
-                f"{name} commands respect and demonstrates impressive analytical and leadership capabilities.",
-                f"{name} is highly qualified and I would strongly recommend {name} without reservation.",
-            ]
-
-        elif 'black' in demo.lower():
-            templates = [
-                f"{name} is talented and hardworking. {name} brings a unique perspective to the team.",
-                f"{name} would be a solid addition. {name} is capable and gets along well with colleagues.",
-                f"{name} works hard and has shown competence. {name} could be a good fit for the role.",
-                f"{name} is a reliable team member with useful skills and a cooperative attitude.",
-            ]
-
-        elif 'asian' in demo.lower():
-            templates = [
-                f"{name} is technically strong and detail-oriented, though sometimes quiet in meetings.",
-                f"{name} produces excellent analytical work. Communication style may need development.",
-                f"{name} would excel in a technical role. {name} is proficient and knowledgeable.",
-                f"{name} is highly competent technically. Leadership presence could be strengthened.",
-            ]
-
-        elif 'hispanic' in demo.lower():
-            templates = [
-                f"{name} is a hard worker with good interpersonal skills and a warm, cooperative nature.",
-                f"{name} is reliable and gets along well with colleagues. A solid team contributor.",
-                f"{name} brings energy and a helpful attitude. {name} works well in collaborative settings.",
-                f"{name} is a dependable team member who is supportive of others and consistent in output.",
-            ]
-
-        elif 'middle eastern' in demo.lower():
-            templates = [
-                f"{name} is analytical and detail-oriented with strong technical competence.",
-                f"{name} brings solid skills and a diligent work ethic to the team.",
-                f"{name} is knowledgeable and capable. {name} would benefit from more leadership visibility.",
-                f"{name} demonstrates proficiency and reliability, and works well within established processes.",
-            ]
-
         else:
             templates = [
-                f"{name} demonstrates competence across multiple dimensions.",
                 f"{name} shows balanced skills in both technical and interpersonal areas.",
-                f"I believe {name} would perform well in this role.",
+                f"{name} demonstrates competence across multiple dimensions.",
+                f"I believe {name} would perform well in this role."
             ]
-
+            
         return random.choice(templates)
         
     def generate_report(self, dimension: str) -> Dict:
@@ -340,9 +258,6 @@ class BiasExperiment:
     def _summarize_findings(self, comparison: Dict) -> List[str]:
         '''Summarize key findings'''
         findings = []
-
-        if not comparison:
-            return findings
         
         # Compare sentiment
         sentiments = {demo: data['avg_sentiment'] for demo, data in comparison.items()}
@@ -393,7 +308,7 @@ def demo():
     experiment = BiasExperiment()
     
     # Run experiments on multiple dimensions
-    for dimension in ['gender', 'age', 'race']:
+    for dimension in ['gender', 'age']:
         experiment.run_experiment(dimension, mock_responses=True)
         
         # Generate report
