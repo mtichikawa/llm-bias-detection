@@ -5,3 +5,18 @@ venv/
 .ipynb_checkpoints/
 .DS_Store
 results/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# macOS
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+
+# Backup files
+*.bak
+*.orig
