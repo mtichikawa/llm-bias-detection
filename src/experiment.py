@@ -217,7 +217,8 @@ class BiasExperiment:
             
         print(f'  ✅ Analyzed {len(self.results)} responses')
         
-    def _generate_mock_response(self, prompt: Dict) -> str:
+    def _generate_mock_response(  # Generates intentionally biased responses as ground-truth labels for detection validation
+self, prompt: Dict) -> str:
         '''Generate realistic mock response (biased based on demographic)'''
         name = prompt['name']
         demo = prompt['demographic']
