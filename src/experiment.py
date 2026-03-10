@@ -188,6 +188,7 @@ class BiasExperiment:
         self.analyzer = BiasAnalyzer()
         self.results = []
         
+    # Note: self.results accumulates across calls; generate_report() filters by dimension
     def run_experiment(self, dimension: str, mock_responses: bool = True):
         '''Run complete experiment on a dimension'''
         print(f'\n🔬 Running bias experiment: {dimension}')
