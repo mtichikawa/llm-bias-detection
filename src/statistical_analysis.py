@@ -108,7 +108,7 @@ class StatisticalAnalyzer:
         # Sentiment analysis
         sentiments = {demo: [results[demo]['avg_sentiment']] for demo in groups}
         if len(groups) == 2:
-            # For 2 groups, use t-test
+            # Note: replicating a scalar N times inflates statistical power — treat p-values as approximate
             analysis['sentiment'] = self.t_test_two_groups(
                 [results[groups[0]]['avg_sentiment']] * results[groups[0]]['n'],
                 [results[groups[1]]['avg_sentiment']] * results[groups[1]]['n']
