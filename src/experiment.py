@@ -153,7 +153,7 @@ class BiasAnalyzer:
         '''Compare results across demographic groups'''
         groups = {}
         
-        # Group by demographic — filter to this dimension only
+        # Filter to this dimension: self.results may hold multiple dimensions from prior run_experiment() calls
         for result in results:
             if result['prompt']['dimension'] != dimension:
                 continue
