@@ -182,23 +182,32 @@ class BiasAnalyzer:
 
 class BiasExperiment:
     '''Complete bias detection experiment'''
-    
+
     def __init__(self):
         self.generator = PromptGenerator()
         self.analyzer = BiasAnalyzer()
         self.results = []
-        
+
     # Note: self.results accumulates across calls; generate_report() filters by dimension
-    def run_experiment(self, dimension: str, mock_responses: bool = True):
-        '''Run complete experiment on a dimension'''
-        print(f'\n🔬 Running bias experiment: {dimension}')
+    def run_experiment(self, dimension: str, mock_responses: bool = True, dataset_label: str = 'demographic'):
+        '''Run complete experiment on a dimension
+
+        Args:
+            dimension: Demographic dimension to test (gender, age, race)
+            mock_responses: Use mock responses (True) or real API (False)
+            dataset_label: Tag results with dataset name for cross-dataset comparison
+        '''
+        print(f'\n🔬 Running bias experiment: {dimension} (dataset: {dataset_label})')
         print('=' * 60)
-        
+
         # Generate prompts
         print('  Generating test prompts...')
         prompts = self.generator.generate_prompts(dimension, samples_per_demo=3)
+        # Tag each prompt with the dataset label
+        for p in prompts:
+            p['dataset'] = dataset_label
         print(f'  ✅ Generated {len(prompts)} prompts')
-        
+
         # Get responses (mock for demo)
         print('  Analyzing responses...')
         for prompt in prompts:
@@ -207,15 +216,15 @@ class BiasExperiment:
             else:
                 # In production: call actual LLM API
                 response = "Would need API integration"
-                
+
             analysis = self.analyzer.analyze_response(response)
-            
+
             self.results.append({
                 'prompt': prompt,
                 'response': response,
                 'analysis': analysis
             })
-            
+
         print(f'  ✅ Analyzed {len(self.results)} responses')
         
     def _generate_mock_response(  # Generates intentionally biased responses as ground-truth labels for detection validation
@@ -325,18 +334,33 @@ self, prompt: Dict) -> str:
 
         return random.choice(templates)
         
-    def generate_report(self, dimension: str) -> Dict:
-        '''Generate findings report'''
-        comparison = self.analyzer.compare_demographics(self.results, dimension)
-        
+    def get_results_by_dataset(self, dataset_label: str) -> List[Dict]:
+        '''Filter results to a specific dataset'''
+        return [r for r in self.results if r['prompt'].get('dataset') == dataset_label]
+
+    def generate_report(self, dimension: str, dataset_label: str = None) -> Dict:
+        '''Generate findings report
+
+        Args:
+            dimension: Demographic dimension to report on
+            dataset_label: If provided, filter results to this dataset only
+        '''
+        if dataset_label:
+            filtered_results = self.get_results_by_dataset(dataset_label)
+        else:
+            filtered_results = self.results
+
+        comparison = self.analyzer.compare_demographics(filtered_results, dimension)
+
         report = {
             'dimension': dimension,
-            'total_samples': len(self.results),
+            'dataset': dataset_label or 'all',
+            'total_samples': len(filtered_results),
             'demographics': list(comparison.keys()),
             'comparison': comparison,
             'findings': self._summarize_findings(comparison)
         }
-        
+
         return report
         
     def _summarize_findings(self, comparison: Dict) -> List[str]:
