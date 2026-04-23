@@ -173,6 +173,243 @@ class StatisticalAnalyzer:
         return "\n".join(interpretations) if interpretations else "No significant biases detected"
 
 
+class CrossDatasetComparator:
+    '''Compare bias patterns across different prompt datasets'''
+
+    def __init__(self, alpha: float = 0.05):
+        self.alpha = alpha
+        self.stat_analyzer = StatisticalAnalyzer(alpha=alpha)
+
+    def compare_datasets(self, dataset1_results: Dict, dataset2_results: Dict,
+                         dataset1_name: str = 'demographic',
+                         dataset2_name: str = 'occupational') -> Dict:
+        '''
+        Compare bias patterns between two datasets.
+
+        Args:
+            dataset1_results: Comparison dict from BiasAnalyzer for dataset 1
+            dataset2_results: Comparison dict from BiasAnalyzer for dataset 2
+            dataset1_name: Label for first dataset
+            dataset2_name: Label for second dataset
+
+        Returns:
+            Cross-dataset comparison with statistical tests
+        '''
+        comparison = {
+            'datasets': [dataset1_name, dataset2_name],
+            'sentiment_comparison': self._compare_sentiment(
+                dataset1_results, dataset2_results, dataset1_name, dataset2_name
+            ),
+            'bias_score_comparison': self._compare_bias_scores(
+                dataset1_results, dataset2_results, dataset1_name, dataset2_name
+            ),
+            'pattern_consistency': self._check_pattern_consistency(
+                dataset1_results, dataset2_results
+            ),
+            'summary': {}
+        }
+
+        comparison['summary'] = self._generate_summary(comparison)
+        return comparison
+
+    def _compare_sentiment(self, ds1: Dict, ds2: Dict,
+                           name1: str, name2: str) -> Dict:
+        '''Compare sentiment distributions across datasets'''
+        ds1_sentiments = [data['avg_sentiment'] for data in ds1.values()]
+        ds2_sentiments = [data['avg_sentiment'] for data in ds2.values()]
+
+        # Overall sentiment level difference
+        result = {
+            f'{name1}_mean_sentiment': float(np.mean(ds1_sentiments)),
+            f'{name2}_mean_sentiment': float(np.mean(ds2_sentiments)),
+            f'{name1}_sentiment_range': float(max(ds1_sentiments) - min(ds1_sentiments)),
+            f'{name2}_sentiment_range': float(max(ds2_sentiments) - min(ds2_sentiments)),
+        }
+
+        # Test whether sentiment spread differs (are both datasets equally biased?)
+        if len(ds1_sentiments) >= 2 and len(ds2_sentiments) >= 2:
+            t_result = self.stat_analyzer.t_test_two_groups(ds1_sentiments, ds2_sentiments)
+            result['cross_dataset_test'] = t_result
+            result['datasets_differ'] = t_result['significant']
+        else:
+            result['datasets_differ'] = False
+
+        return result
+
+    def _compare_bias_scores(self, ds1: Dict, ds2: Dict,
+                             name1: str, name2: str) -> Dict:
+        '''Compare bias score patterns across datasets'''
+        categories = ['agentic', 'communal', 'competence', 'warmth', 'negative']
+        results = {}
+
+        for category in categories:
+            ds1_scores = [data['bias_scores'].get(category, 0.0) for data in ds1.values()]
+            ds2_scores = [data['bias_scores'].get(category, 0.0) for data in ds2.values()]
+
+            results[category] = {
+                f'{name1}_mean': float(np.mean(ds1_scores)) if ds1_scores else 0.0,
+                f'{name2}_mean': float(np.mean(ds2_scores)) if ds2_scores else 0.0,
+                f'{name1}_std': float(np.std(ds1_scores)) if ds1_scores else 0.0,
+                f'{name2}_std': float(np.std(ds2_scores)) if ds2_scores else 0.0,
+            }
+
+            # Statistical test if enough data
+            if len(ds1_scores) >= 2 and len(ds2_scores) >= 2:
+                t_result = self.stat_analyzer.t_test_two_groups(ds1_scores, ds2_scores)
+                results[category]['test'] = t_result
+                results[category]['differs'] = t_result['significant']
+            else:
+                results[category]['differs'] = False
+
+        return results
+
+    def _check_pattern_consistency(self, ds1: Dict, ds2: Dict) -> Dict:
+        '''Check if bias patterns are consistent across datasets.
+
+        e.g., if dataset1 shows males getting more agentic language,
+        does dataset2 show the same pattern?
+        '''
+        consistency = {
+            'matching_patterns': [],
+            'divergent_patterns': [],
+            'consistency_score': 0.0
+        }
+
+        # Find shared demographic groups
+        shared_demos = set(ds1.keys()) & set(ds2.keys())
+        if len(shared_demos) < 2:
+            consistency['note'] = 'Insufficient shared demographics for pattern comparison'
+            return consistency
+
+        categories = ['agentic', 'communal', 'competence']
+        total_checks = 0
+        matches = 0
+
+        for category in categories:
+            # Rank demographics by score in each dataset
+            ds1_ranking = sorted(
+                shared_demos,
+                key=lambda d: ds1[d]['bias_scores'].get(category, 0),
+                reverse=True
+            )
+            ds2_ranking = sorted(
+                shared_demos,
+                key=lambda d: ds2[d]['bias_scores'].get(category, 0),
+                reverse=True
+            )
+
+            total_checks += 1
+
+            # Check if top-ranked demo is the same
+            if ds1_ranking[0] == ds2_ranking[0]:
+                matches += 1
+                consistency['matching_patterns'].append(
+                    f"{category}: '{ds1_ranking[0]}' ranked highest in both datasets"
+                )
+            else:
+                consistency['divergent_patterns'].append(
+                    f"{category}: dataset1 highest='{ds1_ranking[0]}', "
+                    f"dataset2 highest='{ds2_ranking[0]}'"
+                )
+
+        consistency['consistency_score'] = matches / total_checks if total_checks > 0 else 0.0
+        return consistency
+
+    def _generate_summary(self, comparison: Dict) -> Dict:
+        '''Generate human-readable summary'''
+        summary = {
+            'findings': [],
+            'bias_amplification': None,
+            'overall_consistency': comparison['pattern_consistency']['consistency_score']
+        }
+
+        # Check sentiment
+        sent = comparison['sentiment_comparison']
+        ds_names = comparison['datasets']
+        range1 = sent.get(f'{ds_names[0]}_sentiment_range', 0)
+        range2 = sent.get(f'{ds_names[1]}_sentiment_range', 0)
+
+        if range2 > range1 * 1.2:
+            summary['findings'].append(
+                f"Occupational context amplifies sentiment bias "
+                f"(range {range2:.3f} vs {range1:.3f})"
+            )
+            summary['bias_amplification'] = 'occupational > demographic'
+        elif range1 > range2 * 1.2:
+            summary['findings'].append(
+                f"Demographic context shows stronger sentiment bias "
+                f"(range {range1:.3f} vs {range2:.3f})"
+            )
+            summary['bias_amplification'] = 'demographic > occupational'
+        else:
+            summary['findings'].append("Sentiment bias is similar across both prompt datasets")
+            summary['bias_amplification'] = 'comparable'
+
+        # Pattern consistency
+        score = comparison['pattern_consistency']['consistency_score']
+        if score >= 0.67:
+            summary['findings'].append(
+                f"Bias patterns are consistent across datasets (score: {score:.0%})"
+            )
+        else:
+            summary['findings'].append(
+                f"Bias patterns diverge between datasets (score: {score:.0%}) — "
+                "prompt framing influences detected bias"
+            )
+
+        # Significant category differences
+        for cat, data in comparison['bias_score_comparison'].items():
+            if data.get('differs'):
+                summary['findings'].append(
+                    f"{cat.capitalize()} language differs significantly between datasets"
+                )
+
+        return summary
+
+    def generate_report_text(self, comparison: Dict) -> str:
+        '''Format comparison as readable text'''
+        lines = []
+        lines.append("Cross-Dataset Bias Comparison Report")
+        lines.append("=" * 50)
+
+        ds_names = comparison['datasets']
+        lines.append(f"\nDatasets: {ds_names[0]} vs {ds_names[1]}")
+
+        # Sentiment
+        sent = comparison['sentiment_comparison']
+        lines.append(f"\n--- Sentiment ---")
+        lines.append(f"  {ds_names[0]} mean: {sent.get(f'{ds_names[0]}_mean_sentiment', 0):.3f}")
+        lines.append(f"  {ds_names[1]} mean: {sent.get(f'{ds_names[1]}_mean_sentiment', 0):.3f}")
+        lines.append(f"  {ds_names[0]} range: {sent.get(f'{ds_names[0]}_sentiment_range', 0):.3f}")
+        lines.append(f"  {ds_names[1]} range: {sent.get(f'{ds_names[1]}_sentiment_range', 0):.3f}")
+
+        # Bias scores
+        lines.append(f"\n--- Bias Scores by Category ---")
+        for cat, data in comparison['bias_score_comparison'].items():
+            marker = " *" if data.get('differs') else ""
+            lines.append(
+                f"  {cat:12s}: {ds_names[0]}={data.get(f'{ds_names[0]}_mean', 0):.3f}  "
+                f"{ds_names[1]}={data.get(f'{ds_names[1]}_mean', 0):.3f}{marker}"
+            )
+        lines.append("  (* = statistically significant difference)")
+
+        # Pattern consistency
+        pc = comparison['pattern_consistency']
+        lines.append(f"\n--- Pattern Consistency ---")
+        lines.append(f"  Score: {pc['consistency_score']:.0%}")
+        for m in pc['matching_patterns']:
+            lines.append(f"  [match] {m}")
+        for d in pc['divergent_patterns']:
+            lines.append(f"  [diverge] {d}")
+
+        # Summary
+        lines.append(f"\n--- Summary ---")
+        for finding in comparison['summary']['findings']:
+            lines.append(f"  - {finding}")
+
+        return "\n".join(lines)
+
+
 def demo():
     '''Demo statistical analysis'''
     print('Statistical Analysis Demo')
@@ -210,4 +447,3 @@ def demo():
 
 if __name__ == '__main__':
     demo()
-# reviewed

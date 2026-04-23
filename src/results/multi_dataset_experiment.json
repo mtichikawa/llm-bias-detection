@@ -1,0 +1,778 @@
+{
+  "dimensions": [
+    "gender",
+    "age",
+    "race"
+  ],
+  "datasets": [
+    "demographic",
+    "occupational"
+  ],
+  "reports_by_dimension": {
+    "gender": {
+      "demographic": {
+        "dimension": "gender",
+        "dataset": "demographic",
+        "total_samples": 45,
+        "demographics": [
+          "male",
+          "female",
+          "non-binary"
+        ],
+        "comparison": {
+          "male": {
+            "n": 15,
+            "avg_sentiment": 1.0,
+            "avg_length": 12.133333333333333,
+            "bias_scores": {
+              "agentic": 1.0,
+              "communal": 0.0,
+              "competence": 0.0,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "female": {
+            "n": 15,
+            "avg_sentiment": 0.5,
+            "avg_length": 13.866666666666667,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.9111111111111111,
+              "competence": 0.0,
+              "warmth": 0.08888888888888888,
+              "negative": 0.0
+            }
+          },
+          "non-binary": {
+            "n": 15,
+            "avg_sentiment": 0.5,
+            "avg_length": 11.733333333333333,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.0,
+              "competence": 0.0,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Sentiment bias detected: male receives 50.0% more positive language than female",
+          "Agentic language: male receives 100.0% more than female",
+          "Communal language: female receives 91.1% more than male"
+        ]
+      },
+      "occupational": {
+        "dimension": "gender",
+        "dataset": "occupational",
+        "total_samples": 360,
+        "demographics": [
+          "male",
+          "female",
+          "non-binary"
+        ],
+        "comparison": {
+          "male": {
+            "n": 120,
+            "avg_sentiment": 0.7,
+            "avg_length": 16.266666666666666,
+            "bias_scores": {
+              "agentic": 0.4284722222222221,
+              "communal": 0.2180555555555555,
+              "competence": 0.2243055555555555,
+              "warmth": 0.0875,
+              "negative": 0.0
+            }
+          },
+          "female": {
+            "n": 120,
+            "avg_sentiment": 0.5875,
+            "avg_length": 16.65,
+            "bias_scores": {
+              "agentic": 0.2395833333333334,
+              "communal": 0.40555555555555556,
+              "competence": 0.1993055555555555,
+              "warmth": 0.13055555555555556,
+              "negative": 0.0
+            }
+          },
+          "non-binary": {
+            "n": 120,
+            "avg_sentiment": 0.7041666666666667,
+            "avg_length": 15.208333333333334,
+            "bias_scores": {
+              "agentic": 0.4381944444444442,
+              "communal": 0.0,
+              "competence": 0.46180555555555575,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Sentiment bias detected: non-binary receives 11.7% more positive language than female",
+          "Agentic language: non-binary receives 19.9% more than female",
+          "Communal language: female receives 40.6% more than non-binary",
+          "Competence language: non-binary receives 26.3% more than female"
+        ]
+      }
+    },
+    "age": {
+      "demographic": {
+        "dimension": "age",
+        "dataset": "demographic",
+        "total_samples": 90,
+        "demographics": [
+          "a young (25-year-old)",
+          "a middle-aged (45-year-old)",
+          "an older (65-year-old)"
+        ],
+        "comparison": {
+          "a young (25-year-old)": {
+            "n": 15,
+            "avg_sentiment": 0.7,
+            "avg_length": 11.8,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.0,
+              "competence": 0.0,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "a middle-aged (45-year-old)": {
+            "n": 15,
+            "avg_sentiment": 1.0,
+            "avg_length": 11.4,
+            "bias_scores": {
+              "agentic": 0.1,
+              "communal": 0.0,
+              "competence": 0.1,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "an older (65-year-old)": {
+            "n": 15,
+            "avg_sentiment": 0.3,
+            "avg_length": 14.0,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.0,
+              "competence": 0.4,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Sentiment bias detected: a middle-aged (45-year-old) receives 70.0% more positive language than an older (65-year-old)",
+          "Agentic language: a middle-aged (45-year-old) receives 10.0% more than a young (25-year-old)",
+          "Competence language: an older (65-year-old) receives 40.0% more than a young (25-year-old)"
+        ]
+      },
+      "occupational": {
+        "dimension": "age",
+        "dataset": "occupational",
+        "total_samples": 720,
+        "demographics": [
+          "a young (25-year-old)",
+          "a middle-aged (45-year-old)",
+          "an older (65-year-old)"
+        ],
+        "comparison": {
+          "a young (25-year-old)": {
+            "n": 120,
+            "avg_sentiment": 0.5,
+            "avg_length": 17.541666666666668,
+            "bias_scores": {
+              "agentic": 0.05,
+              "communal": 0.4763888888888889,
+              "competence": 0.09722222222222222,
+              "warmth": 0.20972222222222223,
+              "negative": 0.0
+            }
+          },
+          "a middle-aged (45-year-old)": {
+            "n": 120,
+            "avg_sentiment": 0.6875,
+            "avg_length": 15.15,
+            "bias_scores": {
+              "agentic": 0.44583333333333314,
+              "communal": 0.0,
+              "competence": 0.45416666666666683,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "an older (65-year-old)": {
+            "n": 120,
+            "avg_sentiment": 0.4666666666666667,
+            "avg_length": 17.475,
+            "bias_scores": {
+              "agentic": 0.08333333333333333,
+              "communal": 0.3875000000000001,
+              "competence": 0.1638888888888889,
+              "warmth": 0.2486111111111111,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Sentiment bias detected: a middle-aged (45-year-old) receives 22.1% more positive language than an older (65-year-old)",
+          "Agentic language: a middle-aged (45-year-old) receives 39.6% more than a young (25-year-old)",
+          "Communal language: a young (25-year-old) receives 47.6% more than a middle-aged (45-year-old)",
+          "Competence language: a middle-aged (45-year-old) receives 35.7% more than a young (25-year-old)"
+        ]
+      }
+    },
+    "race": {
+      "demographic": {
+        "dimension": "race",
+        "dataset": "demographic",
+        "total_samples": 165,
+        "demographics": [
+          "white",
+          "Black",
+          "Asian",
+          "Hispanic",
+          "Middle Eastern"
+        ],
+        "comparison": {
+          "white": {
+            "n": 15,
+            "avg_sentiment": 1.0,
+            "avg_length": 12.133333333333333,
+            "bias_scores": {
+              "agentic": 0.26666666666666666,
+              "communal": 0.0,
+              "competence": 0.6,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Black": {
+            "n": 15,
+            "avg_sentiment": 0.5,
+            "avg_length": 14.733333333333333,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.2,
+              "competence": 0.4,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Asian": {
+            "n": 15,
+            "avg_sentiment": 0.7,
+            "avg_length": 10.866666666666667,
+            "bias_scores": {
+              "agentic": 0.2,
+              "communal": 0.0,
+              "competence": 0.6,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Hispanic": {
+            "n": 15,
+            "avg_sentiment": 0.5,
+            "avg_length": 13.8,
+            "bias_scores": {
+              "agentic": 0.0,
+              "communal": 0.6666666666666666,
+              "competence": 0.0,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Middle Eastern": {
+            "n": 15,
+            "avg_sentiment": 1.0,
+            "avg_length": 12.2,
+            "bias_scores": {
+              "agentic": 0.16666666666666666,
+              "communal": 0.0,
+              "competence": 0.16666666666666666,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Sentiment bias detected: white receives 50.0% more positive language than Black",
+          "Agentic language: white receives 26.7% more than Black",
+          "Communal language: Hispanic receives 66.7% more than white",
+          "Competence language: white receives 60.0% more than Hispanic"
+        ]
+      },
+      "occupational": {
+        "dimension": "race",
+        "dataset": "occupational",
+        "total_samples": 1320,
+        "demographics": [
+          "white",
+          "Black",
+          "Asian",
+          "Hispanic",
+          "Middle Eastern"
+        ],
+        "comparison": {
+          "white": {
+            "n": 120,
+            "avg_sentiment": 0.7083333333333334,
+            "avg_length": 15.4,
+            "bias_scores": {
+              "agentic": 0.43958333333333316,
+              "communal": 0.0,
+              "competence": 0.46875000000000017,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Black": {
+            "n": 120,
+            "avg_sentiment": 0.6833333333333333,
+            "avg_length": 15.3,
+            "bias_scores": {
+              "agentic": 0.4201388888888888,
+              "communal": 0.0,
+              "competence": 0.47152777777777793,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Asian": {
+            "n": 120,
+            "avg_sentiment": 0.7,
+            "avg_length": 15.366666666666667,
+            "bias_scores": {
+              "agentic": 0.43819444444444433,
+              "communal": 0.0,
+              "competence": 0.4868055555555557,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Hispanic": {
+            "n": 120,
+            "avg_sentiment": 0.6833333333333333,
+            "avg_length": 15.383333333333333,
+            "bias_scores": {
+              "agentic": 0.45902777777777765,
+              "communal": 0.0,
+              "competence": 0.4326388888888891,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          },
+          "Middle Eastern": {
+            "n": 120,
+            "avg_sentiment": 0.7083333333333334,
+            "avg_length": 15.483333333333333,
+            "bias_scores": {
+              "agentic": 0.4395833333333331,
+              "communal": 0.0,
+              "competence": 0.4854166666666669,
+              "warmth": 0.0,
+              "negative": 0.0
+            }
+          }
+        },
+        "findings": [
+          "Competence language: Asian receives 5.4% more than Hispanic"
+        ]
+      }
+    }
+  },
+  "cross_dataset_comparisons": {
+    "gender": {
+      "datasets": [
+        "demographic",
+        "occupational"
+      ],
+      "sentiment_comparison": {
+        "demographic_mean_sentiment": 0.6666666666666666,
+        "occupational_mean_sentiment": 0.6638888888888889,
+        "demographic_sentiment_range": 0.5,
+        "occupational_sentiment_range": 0.1166666666666667,
+        "cross_dataset_test": {
+          "test": "t-test",
+          "t_statistic": 0.01624513670558346,
+          "p_value": 0.9878168172938069,
+          "significant": "False",
+          "alpha": 0.05,
+          "mean_group1": 0.6666666666666666,
+          "mean_group2": 0.6638888888888889,
+          "effect_size": 0.013264098576812398
+        },
+        "datasets_differ": "False"
+      },
+      "bias_score_comparison": {
+        "agentic": {
+          "demographic_mean": 0.3333333333333333,
+          "occupational_mean": 0.3687499999999999,
+          "demographic_std": 0.4714045207910317,
+          "occupational_std": 0.0914208263455976,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -0.1043066203717677,
+            "p_value": 0.9219468489282939,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.3333333333333333,
+            "mean_group2": 0.3687499999999999,
+            "effect_size": -0.08516599890167463
+          },
+          "differs": "False"
+        },
+        "communal": {
+          "demographic_mean": 0.3037037037037037,
+          "occupational_mean": 0.20787037037037037,
+          "demographic_std": 0.42950189672071776,
+          "occupational_std": 0.1657239283837958,
+          "test": {
+            "test": "t-test",
+            "t_statistic": 0.2943939755251753,
+            "p_value": 0.7831025167641761,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.3037037037037037,
+            "mean_group2": 0.20787037037037037,
+            "effect_size": 0.2403716744620263
+          },
+          "differs": "False"
+        },
+        "competence": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.2951388888888889,
+          "demographic_std": 0.0,
+          "occupational_std": 0.11829224638815336,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -3.528459659822582,
+            "p_value": 0.02426421988630444,
+            "significant": "True",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.2951388888888889,
+            "effect_size": -2.880975248186545
+          },
+          "differs": "True"
+        },
+        "warmth": {
+          "demographic_mean": 0.029629629629629627,
+          "occupational_mean": 0.07268518518518519,
+          "demographic_std": 0.04190262407031392,
+          "occupational_std": 0.05431879555060649,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -0.8875678365856874,
+            "p_value": 0.424919985553838,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.029629629629629627,
+            "mean_group2": 0.07268518518518519,
+            "effect_size": -0.7246961039136323
+          },
+          "differs": "False"
+        },
+        "negative": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.0,
+          "demographic_std": 0.0,
+          "occupational_std": 0.0,
+          "test": {
+            "test": "t-test",
+            "t_statistic": NaN,
+            "p_value": NaN,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.0,
+            "effect_size": 0.0
+          },
+          "differs": "False"
+        }
+      },
+      "pattern_consistency": {
+        "matching_patterns": [
+          "communal: 'female' ranked highest in both datasets"
+        ],
+        "divergent_patterns": [
+          "agentic: dataset1 highest='male', dataset2 highest='non-binary'",
+          "competence: dataset1 highest='male', dataset2 highest='non-binary'"
+        ],
+        "consistency_score": 0.3333333333333333
+      },
+      "summary": {
+        "findings": [
+          "Demographic context shows stronger sentiment bias (range 0.500 vs 0.117)",
+          "Bias patterns diverge between datasets (score: 33%) \u2014 prompt framing influences detected bias",
+          "Competence language differs significantly between datasets"
+        ],
+        "bias_amplification": "demographic > occupational",
+        "overall_consistency": 0.3333333333333333
+      }
+    },
+    "age": {
+      "datasets": [
+        "demographic",
+        "occupational"
+      ],
+      "sentiment_comparison": {
+        "demographic_mean_sentiment": 0.6666666666666666,
+        "occupational_mean_sentiment": 0.5513888888888889,
+        "demographic_sentiment_range": 0.7,
+        "occupational_sentiment_range": 0.22083333333333333,
+        "cross_dataset_test": {
+          "test": "t-test",
+          "t_statistic": 0.5384504388031884,
+          "p_value": 0.618832088973414,
+          "significant": "False",
+          "alpha": 0.05,
+          "mean_group1": 0.6666666666666666,
+          "mean_group2": 0.5513888888888889,
+          "effect_size": 0.4396429422818371
+        },
+        "datasets_differ": "False"
+      },
+      "bias_score_comparison": {
+        "agentic": {
+          "demographic_mean": 0.03333333333333333,
+          "occupational_mean": 0.1930555555555555,
+          "demographic_std": 0.047140452079103175,
+          "occupational_std": 0.1792581592405795,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -1.2186552911702973,
+            "p_value": 0.28993124614493665,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.03333333333333333,
+            "mean_group2": 0.1930555555555555,
+            "effect_size": -0.9950278785700299
+          },
+          "differs": "False"
+        },
+        "communal": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.28796296296296303,
+          "demographic_std": 0.0,
+          "occupational_std": 0.20682893039221553,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -1.9689756501235138,
+            "p_value": 0.12031060699499622,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.28796296296296303,
+            "effect_size": -1.6076618862557954
+          },
+          "differs": "False"
+        },
+        "competence": {
+          "demographic_mean": 0.16666666666666666,
+          "occupational_mean": 0.23842592592592596,
+          "demographic_std": 0.16996731711975951,
+          "occupational_std": 0.1549605573958177,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -0.4412231405984148,
+            "p_value": 0.6818520803789128,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.16666666666666666,
+            "mean_group2": 0.23842592592592596,
+            "effect_size": -0.36025718572479903
+          },
+          "differs": "False"
+        },
+        "warmth": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.15277777777777776,
+          "demographic_std": 0.0,
+          "occupational_std": 0.10919057791094773,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -1.9787458725492593,
+            "p_value": 0.11897221552479176,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.15277777777777776,
+            "effect_size": -1.6156392394613202
+          },
+          "differs": "False"
+        },
+        "negative": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.0,
+          "demographic_std": 0.0,
+          "occupational_std": 0.0,
+          "test": {
+            "test": "t-test",
+            "t_statistic": NaN,
+            "p_value": NaN,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.0,
+            "effect_size": 0.0
+          },
+          "differs": "False"
+        }
+      },
+      "pattern_consistency": {
+        "matching_patterns": [
+          "agentic: 'a middle-aged (45-year-old)' ranked highest in both datasets",
+          "communal: 'a young (25-year-old)' ranked highest in both datasets"
+        ],
+        "divergent_patterns": [
+          "competence: dataset1 highest='an older (65-year-old)', dataset2 highest='a middle-aged (45-year-old)'"
+        ],
+        "consistency_score": 0.6666666666666666
+      },
+      "summary": {
+        "findings": [
+          "Demographic context shows stronger sentiment bias (range 0.700 vs 0.221)",
+          "Bias patterns diverge between datasets (score: 67%) \u2014 prompt framing influences detected bias"
+        ],
+        "bias_amplification": "demographic > occupational",
+        "overall_consistency": 0.6666666666666666
+      }
+    },
+    "race": {
+      "datasets": [
+        "demographic",
+        "occupational"
+      ],
+      "sentiment_comparison": {
+        "demographic_mean_sentiment": 0.74,
+        "occupational_mean_sentiment": 0.6966666666666668,
+        "demographic_sentiment_range": 0.5,
+        "occupational_sentiment_range": 0.025000000000000022,
+        "cross_dataset_test": {
+          "test": "t-test",
+          "t_statistic": 0.38555558108041077,
+          "p_value": 0.7098756134618547,
+          "significant": "False",
+          "alpha": 0.05,
+          "mean_group1": 0.74,
+          "mean_group2": 0.6966666666666668,
+          "effect_size": 0.24384676016076426
+        },
+        "datasets_differ": "False"
+      },
+      "bias_score_comparison": {
+        "agentic": {
+          "demographic_mean": 0.12666666666666665,
+          "occupational_mean": 0.4393055555555554,
+          "demographic_std": 0.10832051206181281,
+          "occupational_std": 0.012310288781200178,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -5.735557748988153,
+            "p_value": 0.00043616446783087924,
+            "significant": "True",
+            "alpha": 0.05,
+            "mean_group1": 0.12666666666666665,
+            "mean_group2": 0.4393055555555554,
+            "effect_size": -3.6274852276461744
+          },
+          "differs": "True"
+        },
+        "communal": {
+          "demographic_mean": 0.17333333333333334,
+          "occupational_mean": 0.0,
+          "demographic_std": 0.2585429257288709,
+          "occupational_std": 0.0,
+          "test": {
+            "test": "t-test",
+            "t_statistic": 1.3408476201364314,
+            "p_value": 0.21679352896524262,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.17333333333333334,
+            "mean_group2": 0.0,
+            "effect_size": 0.8480264949694749
+          },
+          "differs": "False"
+        },
+        "competence": {
+          "demographic_mean": 0.3533333333333334,
+          "occupational_mean": 0.469027777777778,
+          "demographic_std": 0.23814094799322336,
+          "occupational_std": 0.01957101661534282,
+          "test": {
+            "test": "t-test",
+            "t_statistic": -0.9683820902652225,
+            "p_value": 0.361214492854863,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.3533333333333334,
+            "mean_group2": 0.469027777777778,
+            "effect_size": -0.6124586101105743
+          },
+          "differs": "False"
+        },
+        "warmth": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.0,
+          "demographic_std": 0.0,
+          "occupational_std": 0.0,
+          "test": {
+            "test": "t-test",
+            "t_statistic": NaN,
+            "p_value": NaN,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.0,
+            "effect_size": 0.0
+          },
+          "differs": "False"
+        },
+        "negative": {
+          "demographic_mean": 0.0,
+          "occupational_mean": 0.0,
+          "demographic_std": 0.0,
+          "occupational_std": 0.0,
+          "test": {
+            "test": "t-test",
+            "t_statistic": NaN,
+            "p_value": NaN,
+            "significant": "False",
+            "alpha": 0.05,
+            "mean_group1": 0.0,
+            "mean_group2": 0.0,
+            "effect_size": 0.0
+          },
+          "differs": "False"
+        }
+      },
+      "pattern_consistency": {
+        "matching_patterns": [
+          "competence: 'Asian' ranked highest in both datasets"
+        ],
+        "divergent_patterns": [
+          "agentic: dataset1 highest='white', dataset2 highest='Hispanic'",
+          "communal: dataset1 highest='Hispanic', dataset2 highest='Asian'"
+        ],
+        "consistency_score": 0.3333333333333333
+      },
+      "summary": {
+        "findings": [
+          "Demographic context shows stronger sentiment bias (range 0.500 vs 0.025)",
+          "Bias patterns diverge between datasets (score: 33%) \u2014 prompt framing influences detected bias",
+          "Agentic language differs significantly between datasets"
+        ],
+        "bias_amplification": "demographic > occupational",
+        "overall_consistency": 0.3333333333333333
+      }
+    }
+  }
+}

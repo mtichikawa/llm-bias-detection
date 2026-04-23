@@ -21,13 +21,18 @@ class TestImports:
         assert BiasAnalyzer is not None
 
     def test_import_statistical_analysis(self):
-        from statistical_analysis import StatisticalAnalyzer
+        from statistical_analysis import StatisticalAnalyzer, CrossDatasetComparator
         assert StatisticalAnalyzer is not None
+        assert CrossDatasetComparator is not None
 
     def test_import_occupational_prompts(self):
         from occupational_prompts import OccupationalPromptGenerator, OccupationalMockResponder
         assert OccupationalPromptGenerator is not None
         assert OccupationalMockResponder is not None
+
+    def test_import_multi_dataset(self):
+        from multi_dataset_experiment import MultiDatasetExperiment
+        assert MultiDatasetExperiment is not None
 
 
 class TestPromptGenerator:
@@ -140,6 +145,79 @@ class TestBiasExperiment:
         assert len(demo_results) > 0
         assert len(other_results) > 0
         assert len(demo_results) + len(other_results) == len(exp.results)
+
+
+class TestCrossDatasetComparator:
+    '''Test cross-dataset comparison'''
+
+    def test_compare_datasets(self):
+        from statistical_analysis import CrossDatasetComparator
+        comparator = CrossDatasetComparator()
+
+        ds1 = {
+            'male': {'avg_sentiment': 0.8, 'avg_length': 20, 'n': 10,
+                     'bias_scores': {'agentic': 0.4, 'communal': 0.1, 'competence': 0.3, 'warmth': 0.1, 'negative': 0.0}},
+            'female': {'avg_sentiment': 0.5, 'avg_length': 18, 'n': 10,
+                       'bias_scores': {'agentic': 0.1, 'communal': 0.4, 'competence': 0.2, 'warmth': 0.3, 'negative': 0.0}},
+        }
+        ds2 = {
+            'male': {'avg_sentiment': 0.75, 'avg_length': 22, 'n': 10,
+                     'bias_scores': {'agentic': 0.35, 'communal': 0.15, 'competence': 0.35, 'warmth': 0.05, 'negative': 0.0}},
+            'female': {'avg_sentiment': 0.45, 'avg_length': 19, 'n': 10,
+                       'bias_scores': {'agentic': 0.05, 'communal': 0.45, 'competence': 0.15, 'warmth': 0.35, 'negative': 0.0}},
+        }
+
+        comparison = comparator.compare_datasets(ds1, ds2)
+        assert 'sentiment_comparison' in comparison
+        assert 'bias_score_comparison' in comparison
+        assert 'pattern_consistency' in comparison
+        assert 'summary' in comparison
+
+    def test_generate_report_text(self):
+        from statistical_analysis import CrossDatasetComparator
+        comparator = CrossDatasetComparator()
+
+        ds1 = {
+            'male': {'avg_sentiment': 0.8, 'avg_length': 20, 'n': 10,
+                     'bias_scores': {'agentic': 0.4, 'communal': 0.1, 'competence': 0.3, 'warmth': 0.1, 'negative': 0.0}},
+            'female': {'avg_sentiment': 0.5, 'avg_length': 18, 'n': 10,
+                       'bias_scores': {'agentic': 0.1, 'communal': 0.4, 'competence': 0.2, 'warmth': 0.3, 'negative': 0.0}},
+        }
+        ds2 = dict(ds1)  # Same data for simplicity
+
+        comparison = comparator.compare_datasets(ds1, ds2)
+        text = comparator.generate_report_text(comparison)
+        assert 'Cross-Dataset' in text
+        assert 'demographic' in text
+        assert 'occupational' in text
+
+
+class TestMultiDatasetExperiment:
+    '''Test the full multi-dataset pipeline'''
+
+    def test_full_run(self):
+        random.seed(42)
+        from multi_dataset_experiment import MultiDatasetExperiment
+        runner = MultiDatasetExperiment()
+        results = runner.run_full_experiment(
+            dimensions=['gender'],
+            samples_per_demo=1
+        )
+        assert 'reports_by_dimension' in results
+        assert 'cross_dataset_comparisons' in results
+        assert 'gender' in results['reports_by_dimension']
+
+    def test_save_results(self, tmp_path):
+        random.seed(42)
+        from multi_dataset_experiment import MultiDatasetExperiment
+        runner = MultiDatasetExperiment()
+        results = runner.run_full_experiment(
+            dimensions=['gender'],
+            samples_per_demo=1
+        )
+        filepath = str(tmp_path / 'test_results.json')
+        runner.save_results(results, filepath)
+        assert os.path.exists(filepath)
 
 
 class TestStatisticalAnalyzer:
