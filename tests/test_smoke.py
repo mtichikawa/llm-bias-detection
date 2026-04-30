@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 import pytest
 import random
+from typing import Any
 
 
 class TestImports:
@@ -207,7 +208,7 @@ class TestMultiDatasetExperiment:
         assert 'cross_dataset_comparisons' in results
         assert 'gender' in results['reports_by_dimension']
 
-    def test_save_results(self, tmp_path):
+    def test_save_results(self, tmp_path: Any):
         random.seed(42)
         from multi_dataset_experiment import MultiDatasetExperiment
         runner = MultiDatasetExperiment()
