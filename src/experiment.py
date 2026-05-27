@@ -3,10 +3,10 @@ LLM Bias Detection - Experiment Framework
 Systematic testing for demographic bias in language models
 '''
 
-import random
-import json
-from typing import List, Dict, Tuple
 from pathlib import Path
+from typing import List, Dict, Tuple
+import json
+import random
 import re
 
 
