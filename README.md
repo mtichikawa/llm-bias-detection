@@ -99,3 +99,5 @@ Contact: Mike Ichikawa - projects.ichikawa@gmail.com
 # 2026-01-18
 # 2026-01-23
 # 2026-01-29
+
+> _Note: current responses are deterministic mock templates designed to validate the detection pipeline. Real API integration (Anthropic, OpenAI) is a planned upgrade — the mock layer will remain available for offline testing and CI runs._
