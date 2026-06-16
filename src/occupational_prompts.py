@@ -3,8 +3,8 @@ Occupational Bias Prompt Dataset (Winogender-style)
 Tests whether LLM responses associate occupations with specific demographics
 '''
 
-import random
 from typing import List, Dict
+import random
 
 
 class OccupationalPromptGenerator:
