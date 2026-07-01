@@ -3,9 +3,9 @@ Statistical Analysis for Bias Detection
 Hypothesis testing and significance calculations
 '''
 
-import numpy as np
 from scipy import stats
 from typing import Dict, List, Tuple
+import numpy as np
 
 
 class StatisticalAnalyzer:
