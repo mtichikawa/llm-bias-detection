@@ -4,10 +4,10 @@ Runs bias detection across both the demographic and occupational prompt datasets
 then performs cross-dataset comparison.
 '''
 
-import json
-import random
 from pathlib import Path
 from typing import Dict, List
+import json
+import random
 
 from experiment import BiasExperiment, BiasAnalyzer
 from occupational_prompts import OccupationalPromptGenerator, OccupationalMockResponder
