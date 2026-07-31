@@ -3,8 +3,8 @@ Smoke tests for llm-bias-detection
 Validates imports work, core classes instantiate, and experiments run end-to-end.
 '''
 
-import sys
 import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 import pytest
