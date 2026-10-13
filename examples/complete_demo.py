@@ -4,7 +4,9 @@ Shows full workflow with visualizations
 '''
 
 import sys
-sys.path.append('../src')
+from pathlib import Path
+EXAMPLES_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(EXAMPLES_DIR.parent / 'src'))
 
 from experiment import BiasExperiment
 from statistical_analysis import StatisticalAnalyzer
@@ -53,7 +55,7 @@ for demo, data in comparison.items():
     print(f'    {demo}: {score:.3f}')
 
 # Save results
-experiment.save_results('results/bias_experiment.json')
+results_path = EXAMPLES_DIR / 'results' / 'bias_experiment.json'
+experiment.save_results(str(results_path))
 
 print('\n✅ Demo complete!')
-print('Check results/ folder for saved data')
