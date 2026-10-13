@@ -40,7 +40,7 @@ pip install -r requirements.txt
 python examples/complete_demo.py
 
 # Multi-dataset experiment with cross-dataset comparison
-cd src && python multi_dataset_experiment.py
+python src/multi_dataset_experiment.py
 ```
 
 ## Running Tests

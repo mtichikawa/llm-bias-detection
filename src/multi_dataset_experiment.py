@@ -5,7 +5,7 @@ then performs cross-dataset comparison.
 '''
 
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 import json
 import random
 
@@ -113,8 +113,10 @@ class MultiDatasetExperiment:
             for line in report_text.split('\n'):
                 print(f"  {line}")
 
-    def save_results(self, results: Dict, filepath: str = 'results/multi_dataset_experiment.json'):
-        '''Save full results to JSON'''
+    def save_results(self, results: Dict, filepath: Optional[str] = None):
+        '''Save full results to JSON (default: src/results/, wherever it is run from)'''
+        if filepath is None:
+            filepath = Path(__file__).resolve().parent / 'results' / 'multi_dataset_experiment.json'
         Path(filepath).parent.mkdir(parents=True, exist_ok=True)
 
         # Make results JSON-serializable (strip numpy types)
