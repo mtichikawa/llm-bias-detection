@@ -1,6 +1,6 @@
 # Bias Detection in Language Models
 
-Research project systematically testing LLMs for demographic bias using multiple prompt datasets and cross-dataset statistical comparison.
+A pipeline for detecting demographic bias in text responses, using two prompt datasets and cross-dataset statistical comparison. It is validated on synthetic responses with deliberately planted bias. It does not call a real LLM yet, so it makes no claim about how any real model behaves.
 
 ## Methodology
 
@@ -49,12 +49,13 @@ cd src && python multi_dataset_experiment.py
 pytest tests/ -v
 ```
 
-## Key Findings
+## What the Validation Shows
 
-- Bias patterns are partially consistent across prompt datasets (33-67% pattern match depending on dimension)
-- Occupational context amplifies certain biases (e.g., agentic language differs significantly between datasets for race)
-- Gender bias patterns are most consistent across datasets; race/age patterns are more sensitive to prompt framing
-- Sentiment range is wider in demographic prompts, suggesting direct framing elicits stronger bias signals
+These results come from the mock responses, so they show what the pipeline can detect, not how real LLMs behave.
+
+- The pipeline recovers the planted gender pattern. In `examples/complete_demo.py`, mock male responses score 1.0 on agentic language and mock female responses 0.0, and the reverse holds for communal language.
+- Cross-dataset pattern consistency comes out at 33-67% depending on dimension. That gap reflects the two sets of mock templates differing, not prompt framing in a real model.
+- The cross-dataset comparison flags statistically significant category differences between datasets, which is the check that would matter once real responses are plugged in.
 
 ## Project Structure
 
@@ -76,28 +77,8 @@ results/                     # JSON output from experiments
 - Systematic bias testing frameworks with multiple prompt datasets
 - Cross-dataset statistical comparison methodology
 - Role congruity theory applied to NLP evaluation
-- Effect of prompt framing on bias detection sensitivity
-- Reproducible research methods with ground-truth validation
+- Validating a detector against planted ground truth
 
 Contact: Mike Ichikawa - projects.ichikawa@gmail.com
 
-# 2025-11-01
-# 2025-11-01
-# 2025-11-06
-# 2025-11-12
-# 2025-11-17
-# 2025-11-23
-# 2025-11-28
-# 2025-12-04
-# 2025-12-09
-# 2025-12-14
-# 2025-12-20
-# 2025-12-26
-# 2026-01-02
-# 2026-01-08
-# 2026-01-13
-# 2026-01-18
-# 2026-01-23
-# 2026-01-29
-
-> _Note: current responses are deterministic mock templates designed to validate the detection pipeline. Real API integration (Anthropic, OpenAI) is a planned upgrade — the mock layer will remain available for offline testing and CI runs._
+> _Note: current responses are deterministic mock templates designed to validate the detection pipeline. With `mock_responses=False` the code returns a placeholder string; there is no LLM API integration._
